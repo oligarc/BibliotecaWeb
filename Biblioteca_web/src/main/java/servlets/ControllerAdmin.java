@@ -105,13 +105,12 @@ public class ControllerAdmin extends HttpServlet {
 			try {
 				listaSocio = daoSocio.getTodosLosSocios();
 				request.setAttribute("listadoSocios", listaSocio);
-				request.getRequestDispatcher("admin/listadosocios.jsp").forward(request, response); //mostrará la lista de socios en la vista listadosocios.jsp
+				request.getRequestDispatcher("admin/listadoSocios.jsp").forward(request, response); //mostrará la lista de socios en la vista listadosocios.jsp
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 				
-			
 			break;
 		}
 	}

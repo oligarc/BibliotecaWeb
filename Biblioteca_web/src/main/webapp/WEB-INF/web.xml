@@ -13,6 +13,7 @@
   <servlet-mapping>
     <servlet-name>ControllerAdmin</servlet-name>
     <url-pattern>/ControllerAdmin</url-pattern>
+    <url-pattern>/controlleradmin</url-pattern>
     <url-pattern>/controllerAdmin</url-pattern>
     <url-pattern>/Controlleradmin</url-pattern>
   </servlet-mapping>
