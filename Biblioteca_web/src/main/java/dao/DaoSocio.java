@@ -127,6 +127,50 @@ public class DaoSocio {
 		
 	}
 	
+	public ArrayList<Socio> getBuscarSocioPorNombre(String nombre) throws SQLException{
+		
+		ArrayList<Socio> listaSociosPorNombre = new ArrayList<Socio>();
+		
+        Connection con = null;
+        Conexion miconex = new Conexion();
+		PreparedStatement ps = null;
+		String query = "SELECT * FROM SOCIO WHERE LOWER(NOMBRE) LIKE ?";
+		
+		try {
+			con=miconex.getConexion();
+			ps=con.prepareStatement(query);
+			ps.setString(1, "%" + nombre.toLowerCase() + "%");
+			ResultSet rc = ps.executeQuery();
+			
+			while(rc.next()) {
+				
+				int idSocio = rc.getInt("IDSOCIO");
+				String email = rc.getString("EMAIL");
+				String nombreSocio = rc.getString("NOMBRE");
+				String direccion = rc.getString("DIRECCION");
+				int version = rc.getInt("VERSION");
+				
+				Socio socio = new Socio(idSocio, email, nombreSocio, direccion, version);
+				listaSociosPorNombre.add(socio);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}finally {
+			if(ps!=null) {
+				ps.close();
+			}if(con!=null) {
+				con.close();
+			}
+		}
+		
+		
+		return listaSociosPorNombre;
+	}
+	
 	public Socio getSocio(int idSocio) {
 		
 		Socio socio = null;

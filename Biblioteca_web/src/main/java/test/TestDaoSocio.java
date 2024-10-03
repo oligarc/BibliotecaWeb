@@ -12,7 +12,7 @@ public class TestDaoSocio {
 		
 		DaoSocio daoSocio = new DaoSocio();
 		try {
-			ArrayList<Socio> listaSocios = daoSocio.getTodosLosSocios();
+			ArrayList<Socio> listaSocios = daoSocio.getBuscarSocioPorNombre("oli");
 			for (Socio socio : listaSocios) {
 				System.out.println(socio.toString());
 			}

@@ -112,6 +112,24 @@ public class ControllerAdmin extends HttpServlet {
 			}
 				
 			break;
+			
+		case "modificardatosocio":
+			
+			ArrayList<Socio> listaSocios;
+			
+			String nombreABuscar = request.getParameter("nombre");
+			try {
+				DaoSocio daoSocio2 = new DaoSocio();
+				listaSocios = daoSocio2.getBuscarSocioPorNombre(nombreABuscar);
+				request.setAttribute("listadoSociosNombre", listaSocios);
+				request.setAttribute("nombreSocio", nombreABuscar);
+				request.getRequestDispatcher("admin/getsocio.jsp").forward(request, response);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
 		}
 	}
 
