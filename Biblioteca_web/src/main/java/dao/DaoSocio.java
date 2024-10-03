@@ -239,5 +239,34 @@ public class DaoSocio {
 			e.printStackTrace();
 		}
 	}
+	
+	public void updateSocio(int idSocio,String nombre,String direccion) {
+		
+		Connection con = null;
+		Conexion miconex = new Conexion();
+		PreparedStatement ps = null;
+		String query = "UPDATE SOCIO SET NOMBRE=?,DIRECCION=? WHERE IDSOCIO=?";
+		
+		try {
+			con=miconex.getConexion();
+			con.setAutoCommit(false);
+			ps=con.prepareStatement(query);
+			ps.setString(1, nombre);
+			ps.setString(2, direccion);
+			ps.setInt(3, idSocio);
+			ps.executeUpdate();
+			con.commit();
+			System.out.println("Socio actualizado correctamente.");
+			ps.close();
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+	}
 
 }

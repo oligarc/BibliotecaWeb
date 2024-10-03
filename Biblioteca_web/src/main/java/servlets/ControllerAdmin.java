@@ -113,7 +113,7 @@ public class ControllerAdmin extends HttpServlet {
 				
 			break;
 			
-		case "modificardatosocio":
+		case "buscarsocio":
 			
 			ArrayList<Socio> listaSocios;
 			
@@ -128,6 +128,18 @@ public class ControllerAdmin extends HttpServlet {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
+		case "modificardatosocio":
+			
+			String nuevoNombre = request.getParameter("nombre");
+			String nuevaDireccion = request.getParameter("direccion");
+			int idSocioAModificar = Integer.parseInt(request.getParameter("idSocio"));
+			
+			DaoSocio daoSocio3 = new DaoSocio();
+			daoSocio3.updateSocio(idSocioAModificar, nuevoNombre, nuevaDireccion);
+			 request.setAttribute("confirmaroperacion", "Los datos del socio han sido modificados con éxito.");
+		     request.getRequestDispatcher("admin/getsocio.jsp").forward(request, response);
+			break;
 			
 			
 		}
