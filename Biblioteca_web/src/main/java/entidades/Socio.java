@@ -6,6 +6,7 @@ public class Socio {
 	private String email;
 	private String nombre;
 	private String direccion;
+	private String clave;
 	private int version;
 	
 	public Socio() {
@@ -13,12 +14,20 @@ public class Socio {
 	}
 
 	public Socio(int idSocio, String email, String nombre, String direccion, int version) {
-		super();
 		this.idSocio = idSocio;
 		this.email = email;
 		this.nombre = nombre;
 		this.direccion = direccion;
 		this.version = version;
+	}
+	
+	
+	public String getClave() {
+		return clave;
+	}
+
+	public void setClave(String clave) {
+		this.clave = clave;
 	}
 
 	public int getIdSocio() {

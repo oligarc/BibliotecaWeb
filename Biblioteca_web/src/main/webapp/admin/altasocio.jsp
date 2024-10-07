@@ -59,6 +59,17 @@
 						       required/>
 					</div>
 					
+					<!-- Campo para la clave del socio -->
+					<div class="etiquetas">
+						<label for="password">Contraseña:</label>
+					</div>
+					<div class="campos">
+						<input type="password" 
+						       id="password" 
+						       name="password"
+						       required/>
+					</div>
+					
 					<!-- Campo para la dirección del socio -->
 					<div class="etiquetas">
 						<label for="direccion">Dirección:</label>

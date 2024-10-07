@@ -57,7 +57,7 @@
             </form>
         </div>
 
-        <!-- Listado de socios si existe `listadoSociosNombre` -->
+
         <c:if test="${listadoSociosNombre != null}">
             <div class="authors">
                 <h1>Listado de socios</h1>
