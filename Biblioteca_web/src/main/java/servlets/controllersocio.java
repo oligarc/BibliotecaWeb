@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import dao.DaoAutor;
 import dao.DaoSocio;
@@ -39,18 +40,39 @@ public class controllersocio extends HttpServlet {
 
 		case "listarAutores":
 			
-			ArrayList<Autor> listadoAutores;
-			try {
-				listadoAutores = daoAutor.listadoAutores();
-				request.setAttribute("listadoAutores", listadoAutores);
-				request.getRequestDispatcher("socios/listadoautores.jsp").forward(request, response); //mostrará la lista de autores en la vista listadoAutores.jsp
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			int totalRegistros = 0;
+		    int pagina = 0; // Por defecto muestro la página 0
+		    int numregpag = 5; // Por defecto le pongo 5
+		    int paginamasalta = 0;
+		    List <Autor> listaAutores = new ArrayList<Autor>();
+		    
+		    if (request.getParameter("pag") != null) { // si nos han pedido una página concreta
+		        pagina = Integer.parseInt(request.getParameter("pag"));
+		    }
+		    if (request.getParameter("nrp") != null) { 
+		        numregpag = Integer.parseInt(request.getParameter("nrp"));
+		    }
+		    
+		    try {
+		        // Averiguar cuántos registros hay
+		        totalRegistros = daoAutor.getTotalRegistros();
+		        // Calcular cuál es la última página (página más alta)
+		        paginamasalta = totalRegistros / numregpag;
+		        // Obtener el listado de socios
+		        listaAutores = daoAutor.listadoAutores(pagina, numregpag);
+		        
+		        // añadir todos los datos a la request para mandárselos a la vista
+		        request.setAttribute("pagina", pagina);
+		        request.setAttribute("numregpag", numregpag);
+		        request.setAttribute("paginamasalta", paginamasalta);
+		        request.setAttribute("totalregistros", totalRegistros);
+		        request.setAttribute("listadoAutores", listaAutores);
+		        request.getRequestDispatcher("socios/listadoautores.jsp").forward(request, response);
+		    } catch (SQLException e) {
+		        procesarError(request, response, e, "socios/listadoautores.jsp");
+		    } catch (Exception e) {
+		        procesarError(request, response, e, "socios/listadoautores.jsp");
+		    }
 			
 			break;
 		}
@@ -62,6 +84,15 @@ public class controllersocio extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
+	}
+	
+	protected void procesarError(HttpServletRequest request, HttpServletResponse response, Exception e, String url) throws ServletException, IOException {
+		String mensajeError = e.getMessage();
+		request.setAttribute("error", mensajeError);
+		if(url == null) {
+			url = "error.jsp";
+		}
+		request.getRequestDispatcher(url).forward(request, response);
 	}
 
 }
