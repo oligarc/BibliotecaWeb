@@ -11,8 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.DaoAutor;
+import dao.DaoLibro;
 import dao.DaoSocio;
 import entidades.Autor;
+import entidades.Libro;
 import entidades.Socio;
 
 /**
@@ -73,6 +75,20 @@ public class controllersocio extends HttpServlet {
 		    } catch (Exception e) {
 		        procesarError(request, response, e, "socios/listadoautores.jsp");
 		    }
+			
+			break;
+			
+			
+		case "listarLibros":
+			
+			DaoLibro daoLibro = new DaoLibro();
+			ArrayList<Libro> listaLibros = new ArrayList<Libro>();
+			String nombre = request.getParameter("nombre");
+			
+			listaLibros = daoLibro.listaTitulosPorNombre(nombre);
+			
+			request.setAttribute("listadoTitulos", listaLibros);
+			request.getRequestDispatcher("socios/getlibros.jsp").forward(request, response);
 			
 			break;
 		}

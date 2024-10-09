@@ -300,7 +300,7 @@ public class DaoSocio {
 		try {
 			con=miconex.getConexion();
 			ps=con.prepareStatement(query);
-			ps.setString(1, "%" + nombre.toLowerCase() + "%");
+			ps.setString(1, "%" + nombre.toLowerCase() + "%"); 
 			ResultSet rc = ps.executeQuery();
 			
 			while(rc.next()) {
