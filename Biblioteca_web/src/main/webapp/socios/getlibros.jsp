@@ -39,13 +39,14 @@
 						src="${pageContext.request.contextPath}/resources/img/azarquiel.gif">&nbsp;Búsqueda
 					sencilla
 				</legend>
-				<input type="text" id="nombre" name="nombre" /> <label
-					for="tituloLibro"></label> <span><select
-					name="opcionbusqueda" id="opcionbusqueda">
+				<input type="text" id="nombre" name="nombre" placeholder="Introduzca patrón de titulo/ISBN/Autor" /> <label
+					for="tituloLibro"></label> <span>
+					<select name="opcionbusqueda" id="opcionbusqueda">
 						<option value="autor">Autor</option>
 						<option value="titulo">Titulo</option>
 						<option value="isbn">ISBN</option>
-				</select> <!-- Operación oculta para indicar la acción en el controlador -->
+					</select> 
+				<!-- Operación oculta para indicar la acción en el controlador -->
 					<input name="operacion" type="hidden" id="operacion"
 					value="listarLibros"> </span><span><input type="submit"
 					value="Buscar" /></span>
@@ -61,6 +62,7 @@
                     <div class="author-card">
                         <h2>Título: <c:out value="${libro.titulo}"/></h2>
                         <p>ISBN: <c:out value="${libro.ISBN}"/></p>
+                        <p>Autor: <c:out value="${libro.autor.nombre}"></c:out></p>
                     </div>
                 </c:forEach>
             </div>
