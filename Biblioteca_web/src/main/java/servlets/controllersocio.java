@@ -96,7 +96,13 @@ public class controllersocio extends HttpServlet {
 			case "isbn":
 				listaLibros = daoLibro.listaLibrosPorISBN(nombre);
 				break;
+			case "autor":
+				listaLibros = daoLibro.listaTitulosPorNombreAutor(nombre);
+				
+			break;
 			}
+			
+		
 			
 			
 			request.setAttribute("listadoTitulos", listaLibros);
