@@ -459,5 +459,49 @@ public class DaoSocio {
 		}
 		return numeroRegistros;
 	}
+	
+	public ArrayList<Socio> listadoSociosMorosos()
+			throws SQLException, Exception {
+
+		ArrayList<Socio> listasocios;
+		listasocios = new ArrayList<Socio>();
+		Connection con = null;
+		ResultSet rs = null;
+		Statement st = null;
+		try {
+			Conexion miconex = new Conexion();
+			con = miconex.getConexion();
+			String ordenSql ="SELECT  IDSOCIO,NOMBRE "+
+                             "FROM SOCIO S "+
+                             "WHERE IDSOCIO IN(SELECT IDSOCIO "+
+                                               "FROM PRESTAMO "+
+                                                "WHERE FECHALIMITEDEVOLUCION<SYSDATE) "+
+                             "ORDER BY S.IDSOCIO";
+			System.out.println("La orden lanzada es: " + ordenSql);
+			st = con.createStatement();
+			rs = st.executeQuery(ordenSql);
+			while (rs.next()) {
+				Socio miSocio = new Socio();
+				miSocio.setIdSocio(rs.getInt("IDSOCIO"));
+				miSocio.setNombre(rs.getString("NOMBRE"));
+				listasocios.add(miSocio);
+			}
+		} catch (SQLException se) {
+			se.printStackTrace();
+			throw se;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			if (rs != null)
+				rs.close();
+			if (st != null)
+				st.close();
+			if (con != null)
+				con.close();
+
+		}
+		return listasocios;
+		
+	}
 
 }

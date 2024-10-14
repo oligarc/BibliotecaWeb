@@ -179,6 +179,25 @@ public class ControllerAdmin extends HttpServlet {
 			request.setAttribute("confirmaroperacion", "Los datos del socio han sido modificados con éxito.");
 			request.getRequestDispatcher("admin/getsocio.jsp").forward(request, response);
 			break;
+			
+		case "socioslibrosfueraplazo":
+			
+			DaoSocio daoSocio4 = new DaoSocio();
+			ArrayList<Socio> listadoSociosMorosos = new ArrayList<Socio>();
+			
+			try {
+				listadoSociosMorosos = daoSocio4.listadoSociosMorosos();
+				request.setAttribute("listadoSociosMorosos", listadoSociosMorosos);
+				request.getRequestDispatcher("admin/listadoSociosMorosos.jsp").forward(request, response);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			break;
 
 		}
 	}
