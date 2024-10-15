@@ -27,8 +27,35 @@
 						<p>
 							ID:
 							<c:out value="${socio.idSocio}" />
+							<a
+								href="${pageContext.request.contextPath}/ControllerAdmin?operacion=verlibrosfuerasdeplazo&idSocio=${socio.idSocio}">Ver
+								libros</a>
 					</div>
 				</c:forEach>
+
+
+				<c:if test="${not empty listadoPrestamos}">
+				<div class="authors">
+					<h1>Préstamos no devueltos del socio : <c:out value="${socio.nombre}"></c:out> </h1>
+					<div class="author-card">
+					<c:forEach items="${listadoPrestamos}" var="prestamo">
+						<p>ID EJEMPLAR:
+						<c:out value="${prestamo.idejemplar}"></c:out>
+						<p>TÍTULO:
+						<c:out value="${prestamo.titulo}"></c:out>
+						<p>IDSOCIO:
+						<c:out value="${prestamo.idsocio}"></c:out>
+						<p>NOMBRE SOCIO:
+						<c:out value="${prestamo.nombreSocio}"></c:out>
+					</c:forEach>
+					</div>
+					</div>
+				</c:if>
+
+				<c:if test="${empty listadoPrestamos}">
+					<p>No hay préstamos fuera de plazo para este socio.</p>
+				</c:if>
+
 			</div>
 		</div>
 	</div>

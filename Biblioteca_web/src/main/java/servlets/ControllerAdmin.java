@@ -14,8 +14,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.DaoAutor;
+import dao.DaoPrestamo;
 import dao.DaoSocio;
 import entidades.Autor;
+import entidades.Prestamo;
 import entidades.Socio;
 
 /**
@@ -39,6 +41,8 @@ public class ControllerAdmin extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		
 
 		// Obtenemos la operación que han seleccionado en el menuú
 		String operacion = request.getParameter("operacion");
@@ -181,7 +185,7 @@ public class ControllerAdmin extends HttpServlet {
 			break;
 			
 		case "socioslibrosfueraplazo":
-			
+			System.out.println("prueba");
 			DaoSocio daoSocio4 = new DaoSocio();
 			ArrayList<Socio> listadoSociosMorosos = new ArrayList<Socio>();
 			
@@ -198,6 +202,39 @@ public class ControllerAdmin extends HttpServlet {
 			}
 			
 			break;
+			
+		case "verlibrosfuerasdeplazo":
+			
+			DaoSocio daoSocio6 = new DaoSocio();
+		    DaoPrestamo daoPrestamo = new DaoPrestamo();
+		    String idSocio = request.getParameter("idSocio");
+		    ArrayList<Prestamo> listadoPrestamos;
+		    Socio socio = new Socio();
+		    
+		    
+		    
+		    Long idSocioLong = Long.parseLong(idSocio);
+		    int idSocioInt = Integer.parseInt(idSocio);
+		    socio = daoSocio6.getSocio(idSocioInt);
+		    System.out.println("ID Socio: " + idSocioLong); // Añadir un log para depuración
+
+		    try {
+		        listadoPrestamos = daoPrestamo.listadoPrestamosFueraPlazo(idSocioLong);
+		        if (listadoPrestamos == null || listadoPrestamos.isEmpty()) {
+		            System.out.println("No se encontraron préstamos fuera de plazo para el socio: " + idSocioLong);
+		        }
+		        request.setAttribute("socio", socio);
+		        request.setAttribute("listadoPrestamos", listadoPrestamos);
+		        request.getRequestDispatcher("admin/listadoSociosMorosos.jsp").forward(request, response);
+		    } catch (SQLException e) {
+		        e.printStackTrace();
+		        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error de base de datos");
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error inesperado");
+		    }
+		    break;
+
 
 		}
 	}
