@@ -39,14 +39,12 @@
 					<h1>Préstamos no devueltos del socio : <c:out value="${socio.nombre}"></c:out> </h1>
 					<div class="author-card">
 					<c:forEach items="${listadoPrestamos}" var="prestamo">
-						<p>ID EJEMPLAR:
-						<c:out value="${prestamo.idejemplar}"></c:out>
 						<p>TÍTULO:
 						<c:out value="${prestamo.titulo}"></c:out>
-						<p>IDSOCIO:
-						<c:out value="${prestamo.idsocio}"></c:out>
-						<p>NOMBRE SOCIO:
-						<c:out value="${prestamo.nombreSocio}"></c:out>
+						<p>FECHA DEL PRÉSTAMO:
+						<c:out value="${prestamo.fechaprestamo}"></c:out>
+						<p>DÍAS DE DEMORA:
+						<c:out value="${prestamo.diasDemora}"></c:out>
 					</c:forEach>
 					</div>
 					</div>

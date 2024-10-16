@@ -5,6 +5,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -42,8 +44,8 @@ public class ControllerAdmin extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
+		HttpSession session = request.getSession();
 		
-
 		// Obtenemos la operación que han seleccionado en el menuú
 		String operacion = request.getParameter("operacion");
 
@@ -191,7 +193,7 @@ public class ControllerAdmin extends HttpServlet {
 			
 			try {
 				listadoSociosMorosos = daoSocio4.listadoSociosMorosos();
-				request.setAttribute("listadoSociosMorosos", listadoSociosMorosos);
+				session.setAttribute("listadoSociosMorosos", listadoSociosMorosos); //Con el session lo guardas en la sesión y ya no tienes que volver a enviarlo
 				request.getRequestDispatcher("admin/listadoSociosMorosos.jsp").forward(request, response);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
