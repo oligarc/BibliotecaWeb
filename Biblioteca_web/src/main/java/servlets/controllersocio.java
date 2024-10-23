@@ -86,24 +86,15 @@ public class controllersocio extends HttpServlet {
 			String nombre = request.getParameter("nombre");
 			String opcionSelect = request.getParameter("opcionbusqueda");
 			
-			
-			switch(opcionSelect) {
-			
-			case "titulo":
-				listaLibros = daoLibro.listaTitulosPorNombre(nombre);
-			break;
-			
-			case "isbn":
-				listaLibros = daoLibro.listaLibrosPorISBN(nombre);
-				break;
-			case "autor":
-				listaLibros = daoLibro.listaTitulosPorNombreAutor(nombre);
-				
-			break;
+			try {
+				listaLibros = daoLibro.listadoLibros(opcionSelect, nombre);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			
-		
-			
 			
 			request.setAttribute("listadoTitulos", listaLibros);
 			request.getRequestDispatcher("socios/getlibros.jsp").forward(request, response);

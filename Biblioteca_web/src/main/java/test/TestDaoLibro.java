@@ -28,10 +28,24 @@ public class TestDaoLibro {
 		
 		*/
 		
-		ArrayList<Libro> pruebaListaLibrosPorTitulo = daoLibro.listaTitulosPorNombre("la");
+		/*ArrayList<Libro> pruebaListaLibrosPorTitulo = daoLibro.listaTitulosPorNombre("la");
 		for (Libro libro : pruebaListaLibrosPorTitulo) {
             System.out.println(libro.toString());
         }
+        */
+		
+		try {
+			ArrayList<Libro> pruebaLibrosJavier = daoLibro.listadoLibros("titulo", "la");
+			for (Libro libro : pruebaLibrosJavier) {
+				System.out.println(libro.toString());
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 	}

@@ -61,8 +61,11 @@
                 <c:forEach items="${listadoTitulos}" var="libro">
                     <div class="author-card">
                         <h2>Título: <c:out value="${libro.titulo}"/></h2>
-                        <p>ISBN: <c:out value="${libro.ISBN}"/></p>
-                        <p>Autor: <c:out value="${libro.autor.nombre}"></c:out></p>
+                        <p>ISBN: <c:out value="${libro.isbn}"/></p>
+                        <p>Autor: <c:out value="${libro.nombreAutor}"></c:out></p>
+                        <p>Totales: <c:out value="${libro.ejemplaresTotales}"></c:out> </p>
+                        <p>Prestados: <c:out value="${libro.ejemplaresEnPrestamo}"></c:out> </p>
+                        <p>Disponibles: <c:out value="${libro.ejemplaresDisponibles}"></c:out> </p>
                     </div>
                 </c:forEach>
             </div>

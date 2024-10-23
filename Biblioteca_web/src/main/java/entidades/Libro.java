@@ -1,50 +1,64 @@
 package entidades;
 
 public class Libro {
-	
-	private String ISBN;
+	private String isbn;
 	private String titulo;
-	private Autor autor;
+	private int idautor;
+	private String nombreAutor;
+	private int ejemplaresTotales;
+	private int ejemplaresEnPrestamo;
+	private int ejemplaresDisponibles;
 	
-	public Libro() {
-        
-    }
-	
-	public Libro(String iSBN, String titulo, Autor autor) {
-		this.ISBN = iSBN;
-        this.titulo = titulo;
-        this.autor = autor;
+	public Libro(){
+		
 	}
-
-	public String getISBN() {
-		return ISBN;
+	public String getIsbn() {
+		return isbn;
 	}
-
-	public void setISBN(String iSBN) {
-		ISBN = iSBN;
+	public void setIsbn(String isbn) {
+		this.isbn = isbn;
 	}
-
 	public String getTitulo() {
 		return titulo;
 	}
-
 	public void setTitulo(String titulo) {
 		this.titulo = titulo;
 	}
-
-	public Autor getAutor() {
-		return autor;
+	public int getIdautor() {
+		return idautor;
 	}
-
-	public void setAutor(Autor autor) {
-		this.autor = autor;
+	public void setIdautor(int idautor) {
+		this.idautor = idautor;
 	}
-
+	public String getNombreAutor() {
+		return nombreAutor;
+	}
+	public void setNombreAutor(String nombreAutor) {
+		this.nombreAutor = nombreAutor;
+	}
+	public int getEjemplaresTotales() {
+		return ejemplaresTotales;
+	}
+	public void setEjemplaresTotales(int ejemplaresTotales) {
+		this.ejemplaresTotales = ejemplaresTotales;
+	}
+	public int getEjemplaresEnPrestamo() {
+		return ejemplaresEnPrestamo;
+	}
+	public void setEjemplaresEnPrestamo(int ejemplaresEnPrestamo) {
+		this.ejemplaresEnPrestamo = ejemplaresEnPrestamo;
+	}
+	public int getEjemplaresDisponibles() {
+		return ejemplaresDisponibles;
+	}
+	public void setEjemplaresDisponibles(int ejemplaresDisponibles) {
+		this.ejemplaresDisponibles = ejemplaresDisponibles;
+	}
 	@Override
 	public String toString() {
-		return "Libro [ISBN=" + ISBN + ", titulo=" + titulo + ", autor=" + autor + "]";
+		return "Libro [isbn=" + isbn + ", titulo=" + titulo + ", idautor=" + idautor + ", nombreAutor=" + nombreAutor
+				+ ", ejemplaresTotales=" + ejemplaresTotales + ", ejemplaresEnPrestamo=" + ejemplaresEnPrestamo
+				+ ", ejemplaresDisponibles=" + ejemplaresDisponibles + "]";
 	}
-	
-	
 
 }
