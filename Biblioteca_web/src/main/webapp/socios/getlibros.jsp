@@ -43,7 +43,9 @@
 					for="tituloLibro"></label> <span>
 					<select name="opcionbusqueda" id="opcionbusqueda">
 						<option value="autor">Autor</option>
-						<option value="titulo">Titulo</option>
+						<option value="titulo">
+						
+						Titulo</option>
 						<option value="isbn">ISBN</option>
 					</select> 
 				<!-- Operación oculta para indicar la acción en el controlador -->

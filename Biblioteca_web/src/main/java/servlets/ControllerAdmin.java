@@ -236,6 +236,20 @@ public class ControllerAdmin extends HttpServlet {
 		        response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Error inesperado");
 		    }
 		    break;
+		    
+		case "nuevoPrestamo":
+			
+			DaoPrestamo daoPrestamo2 = new DaoPrestamo();
+			Prestamo prestamo = new Prestamo();
+			
+			int idEjemplar = Integer.parseInt(request.getParameter("idEjemplar"));
+			String tituloEjemplar = request.getParameter("titulo");
+			int idSocioParaEjemplar = Integer.parseInt(request.getParameter("idSocio"));
+			String nombreSocio = request.getParameter("nombreSocio");
+			
+			
+			
+			break;
 
 
 		}

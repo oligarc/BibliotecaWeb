@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import conexiones.Conexion;
 import entidades.Prestamo;
+import entidades.Socio;
 import excepciones.PrestamoException;
 
 public class DaoPrestamo {
@@ -24,6 +25,32 @@ public class DaoPrestamo {
         Prestamo prestamo = findPrestamoById(p.getIdejemplar());    
        if(prestamo!=null)
 			throw new PrestamoException("Préstamo duplicado. El ejemplar indicado está en préstamo");
+       
+       Socio socio = new Socio();
+       DaoSocio daoSocio = new DaoSocio();
+       
+       socio = daoSocio.findSocioByID((int) p.getIdsocio());
+       
+       if(socio==null) {
+    	   throw new PrestamoException("El código de socio no es válido");
+       }
+       
+       ArrayList<Socio> listadoSociosMorosos = new ArrayList<Socio>();
+       listadoSociosMorosos = daoSocio.listadoSociosMorosos();
+       
+       for (Socio socioMoroso : listadoSociosMorosos) {
+		if(socioMoroso.getIdSocio()==p.getIdsocio()) {
+			throw new PrestamoException("El socio tiene ya un préstamo que devolver");
+		}
+	}
+       
+       Prestamo prestamoRepetido = findPrestamoById(p.getIdejemplar());
+       
+       if(prestamoRepetido.getIdsocio()==p.getIdsocio()) {
+    	   throw new PrestamoException("El socio no puede tener más de un préstamo del mismo libro");
+       }
+       
+       
         try{
             Conexion miconex=new Conexion();
             con=miconex.getConexion();

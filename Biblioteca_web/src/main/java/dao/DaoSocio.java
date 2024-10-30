@@ -97,6 +97,40 @@ public class DaoSocio {
 		return socio;
 
 	}
+	
+	public Socio findSocioByID(int idSocio) {
+		
+		Socio socio = null;
+		
+		Connection con = null;
+		ResultSet rs = null;
+		PreparedStatement st = null;
+		Conexion miconex = new Conexion();
+		
+		String query = "SELECT IDSOCIO,NOMBRE,EMAIL,DIRECCION FROM SOCIO WHERE IDSOCIO=?";
+		
+		try {
+			con = miconex.getConexion();
+			st = con.prepareStatement(query);
+			st.setInt(1, idSocio);
+			rs = st.executeQuery();
+			
+			if(rs.next()) {
+				socio = new Socio();
+				socio.setIdSocio(rs.getInt("IDSOCIO"));
+				socio.setNombre(rs.getString("NOMBRE"));
+				socio.setEmail(rs.getString("EMAIL"));
+				socio.setDireccion(rs.getString("DIRECCION"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return socio;
+	}
 
 	
 	public void addSocio(Socio socio) throws SQLException {
