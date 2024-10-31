@@ -258,9 +258,8 @@ public class ControllerAdmin extends HttpServlet {
 			
 			
 			LocalDate fechaPrestamoLocal = LocalDate.parse(fechaPrestamo,formato2);
-			LocalDate fechaLimiteDevolucion = fechaPrestamoLocal;
 			
-			int dias=0;
+			
 			
 			if(fechaPrestamoLocal.getDayOfWeek() == DayOfWeek.SATURDAY) {
 				fechaPrestamoLocal = fechaPrestamoLocal.plusDays(2);
@@ -268,12 +267,17 @@ public class ControllerAdmin extends HttpServlet {
 				fechaPrestamoLocal = fechaPrestamoLocal.plusDays(1);
 			}
 			
-			while(dias<5) {
-				fechaLimiteDevolucion = fechaLimiteDevolucion.plusDays(1);
-				
-				if(fechaLimiteDevolucion.getDayOfWeek() != DayOfWeek.SATURDAY && fechaLimiteDevolucion.getDayOfWeek() != DayOfWeek.SUNDAY) {
-					dias++;
-				}
+
+			LocalDate fechaLimiteDevolucion = fechaPrestamoLocal;
+			int dias=0;
+			while (dias < 5) {
+			    fechaLimiteDevolucion = fechaLimiteDevolucion.plusDays(1);
+			    
+			    // Incrementa solo en días que no sean sábados ni domingos
+			    if (!(fechaLimiteDevolucion.getDayOfWeek() == DayOfWeek.SATURDAY || 
+			          fechaLimiteDevolucion.getDayOfWeek() == DayOfWeek.SUNDAY)) {
+			        dias++;
+			    }
 			}
 			
 			Date fechaLimiteDevolucionSQL = java.sql.Date.valueOf(fechaLimiteDevolucion);
