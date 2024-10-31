@@ -1,5 +1,6 @@
 package dao;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -44,20 +45,22 @@ public class DaoPrestamo {
 		}
 	}
        
+    // Comprobar si el mismo socio ya tiene un préstamo del mismo ejemplar
        Prestamo prestamoRepetido = findPrestamoById(p.getIdejemplar());
-       
-       if(prestamoRepetido.getIdsocio()==p.getIdsocio()) {
-    	   throw new PrestamoException("El socio no puede tener más de un préstamo del mismo libro");
+       if (prestamoRepetido != null && prestamoRepetido.getIdsocio() == p.getIdsocio()) {
+           throw new PrestamoException("El socio no puede tener más de un préstamo del mismo libro");
        }
        
        
         try{
             Conexion miconex=new Conexion();
             con=miconex.getConexion();
-            ordenSQL="INSERT INTO PRESTAMO(IDEJEMPLAR,IDSOCIO,FECHAPRESTAMO) VALUES(?,?,SYSDATE)";
+            ordenSQL="INSERT INTO PRESTAMO(IDEJEMPLAR,IDSOCIO,FECHAPRESTAMO,FECHALIMITEDEVOLUCION) VALUES(?,?,?,?)";
             sentencia=con.prepareStatement(ordenSQL);
             sentencia.setInt(1,p.getIdejemplar());
             sentencia.setLong(2,p.getIdsocio());
+            sentencia.setDate(3, (Date) p.getFechaprestamo());
+            sentencia.setDate(4, (Date) p.getFechalimitedevolucion());
             sentencia.executeUpdate();
             sentencia.close();
             con.close();

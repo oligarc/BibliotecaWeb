@@ -137,6 +137,21 @@ public class TestDaoPrestamo {
 	       
 	       */
 		
+		prestamo.setIdejemplar(4);
+		prestamo.setIdsocio(5);
+		
+		try {
+			daoPrestamo.insertaPrestamo(prestamo);
+		} catch (PrestamoException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 
 	}

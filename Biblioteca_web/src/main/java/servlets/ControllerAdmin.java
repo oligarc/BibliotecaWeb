@@ -10,6 +10,9 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -21,6 +24,7 @@ import dao.DaoSocio;
 import entidades.Autor;
 import entidades.Prestamo;
 import entidades.Socio;
+import excepciones.PrestamoException;
 
 /**
  * Servlet implementation class ControllerAdmin
@@ -246,8 +250,58 @@ public class ControllerAdmin extends HttpServlet {
 			String tituloEjemplar = request.getParameter("titulo");
 			int idSocioParaEjemplar = Integer.parseInt(request.getParameter("idSocio"));
 			String nombreSocio = request.getParameter("nombreSocio");
+			String fechaPrestamo = request.getParameter("fechaPrestamo");
+			
+			DateTimeFormatter formato2 = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //Patrón para la BBDD
+			LocalDate localDate2 = LocalDate.parse(fechaPrestamo, formato2);
+			Date fechaPrestamoSQL = java.sql.Date.valueOf(localDate2); //Valor para la fecha de préstamo realizada que se introduce en la BBDD
 			
 			
+			LocalDate fechaPrestamoLocal = LocalDate.parse(fechaPrestamo,formato2);
+			LocalDate fechaLimiteDevolucion = fechaPrestamoLocal;
+			
+			int dias=0;
+			
+			if(fechaPrestamoLocal.getDayOfWeek() == DayOfWeek.SATURDAY) {
+				fechaPrestamoLocal = fechaPrestamoLocal.plusDays(2);
+			}else if(fechaPrestamoLocal.getDayOfWeek() == DayOfWeek.SUNDAY) {
+				fechaPrestamoLocal = fechaPrestamoLocal.plusDays(1);
+			}
+			
+			while(dias<5) {
+				fechaLimiteDevolucion = fechaLimiteDevolucion.plusDays(1);
+				
+				if(fechaLimiteDevolucion.getDayOfWeek() != DayOfWeek.SATURDAY && fechaLimiteDevolucion.getDayOfWeek() != DayOfWeek.SUNDAY) {
+					dias++;
+				}
+			}
+			
+			Date fechaLimiteDevolucionSQL = java.sql.Date.valueOf(fechaLimiteDevolucion);
+			
+			
+			prestamo.setIdejemplar(idEjemplar);
+			prestamo.setTitulo(tituloEjemplar);
+			prestamo.setIdsocio(idSocioParaEjemplar);
+			prestamo.setNombreSocio(nombreSocio);
+			prestamo.setFechaprestamo(fechaPrestamoSQL);
+			prestamo.setFechalimitedevolucion(fechaLimiteDevolucionSQL);
+			
+			try {
+				daoPrestamo2.insertaPrestamo(prestamo);
+				request.setAttribute("confirmaroperacion", "Préstamo realizado con éxito.");
+			} catch (PrestamoException e) {
+				request.setAttribute("error", e.getMessage());
+				e.printStackTrace();
+			} catch (SQLException e) {
+				request.setAttribute("error", "Error en la base de datos: " + e.getMessage());
+				e.printStackTrace();
+			} catch (Exception e) {
+				request.setAttribute("error", "Error inesperado: " +e.getMessage());
+				e.printStackTrace();
+			}
+			
+			
+			request.getRequestDispatcher("admin/prestamo.jsp").forward(request, response);
 			
 			break;
 
