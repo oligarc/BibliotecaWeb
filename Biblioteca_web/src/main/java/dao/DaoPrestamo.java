@@ -4,6 +4,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 import conexiones.Conexion;
@@ -51,16 +53,26 @@ public class DaoPrestamo {
            throw new PrestamoException("El socio no puede tener más de un préstamo del mismo libro");
        }
        
+       LocalDate fechalimiteDevolucion = LocalDate.now();
+       
+       fechalimiteDevolucion =fechalimiteDevolucion.plusDays(5);
+       int diaSemana = fechalimiteDevolucion.getDayOfWeek().getValue();
+       
+       if(diaSemana == 6) {
+    	   fechalimiteDevolucion = fechalimiteDevolucion.plusDays(2);
+       }else if(diaSemana ==7) {
+    	   fechalimiteDevolucion = fechalimiteDevolucion.plusDays(1);
+       }
+       
        
         try{
             Conexion miconex=new Conexion();
             con=miconex.getConexion();
-            ordenSQL="INSERT INTO PRESTAMO(IDEJEMPLAR,IDSOCIO,FECHAPRESTAMO,FECHALIMITEDEVOLUCION) VALUES(?,?,?,?)";
+            ordenSQL="INSERT INTO PRESTAMO(IDEJEMPLAR,IDSOCIO,FECHAPRESTAMO,FECHALIMITEDEVOLUCION) VALUES(?,?,SYSDATE,?)";
             sentencia=con.prepareStatement(ordenSQL);
             sentencia.setInt(1,p.getIdejemplar());
             sentencia.setLong(2,p.getIdsocio());
-            sentencia.setDate(3, (Date) p.getFechaprestamo());
-            sentencia.setDate(4, (Date) p.getFechalimitedevolucion());
+            sentencia.setObject(3, fechalimiteDevolucion);
             sentencia.executeUpdate();
             sentencia.close();
             con.close();
@@ -77,19 +89,53 @@ public class DaoPrestamo {
         }
     }
     /*********************************************************************************************************************************************************/
-    public int borraPrestamo(int codigoejemplar)throws SQLException,Exception{
+    public int devolucionPrestamo(int idejemplar)throws SQLException,Exception{
        String ordenSQL;
        int resultado;
        Connection con=null;
        PreparedStatement sentencia=null;
+       DaoEjemplar daoEjemplar = new DaoEjemplar();
+       Conexion miconex=new Conexion();
+       con=miconex.getConexion();
        try{
-            Conexion miconex=new Conexion();
-            con=miconex.getConexion();
+    	   
+    	   //Comprobar si el ejemplar existe
+    	   	
+    	   	if(daoEjemplar.findEjemplarById(idejemplar) == null) {
+    	   		throw new PrestamoException("Ejemplar no existe o está dado de baja.");
+    	   	}
+    	   	
+    	   	//Comprobar si el ejemplar está prestado
+    	   	
+    	   	Prestamo prestamo = this.findPrestamoById(idejemplar);
+    	   	
+    	   	if(prestamo == null) {
+    	   		throw new PrestamoException("Imposible hacer la devolución. Este ejemplar no está en préstamo");
+    	   	}
+    	   	
+    	   	//Ahora nos queda comprobar la fecha de devolución por si se ha retrasado
+    	   	
+    	   	
+    	   	if(prestamo.getFechalimitedevolucion().before(java.sql.Date.valueOf(LocalDate.now()))) {
+    	   		ordenSQL = "INSERT INTO SOCIOPENALIZADO VALUES(?,SYSDATE+15)";
+    	   		sentencia = con.prepareStatement(ordenSQL);
+    	   		sentencia.setLong(1, prestamo.getIdsocio());
+    	   		sentencia.executeUpdate();
+    	   		
+    	   	}
+            
             ordenSQL="DELETE FROM PRESTAMO WHERE IDEJEMPLAR=?";
-            System.out.println("La ORDEN DE BORRADO ES: "+ordenSQL);
             sentencia=con.prepareStatement(ordenSQL);
-            sentencia.setInt(1,codigoejemplar);
+            sentencia.setInt(1,idejemplar);
             resultado=sentencia.executeUpdate();
+            
+            //Añadimos una tupla en la tabla devolucion
+            
+            ordenSQL = "INSERT INTO DEVOLUCION VALUES (?,?,?,SYSDATE)";
+            sentencia.setInt(1,idejemplar);
+            sentencia.setLong(2, prestamo.getIdsocio());
+            sentencia.setObject(3, prestamo.getFechaprestamo());
+            sentencia.executeUpdate();
             sentencia.close();
             con.close();
        }catch(SQLException se){

@@ -247,10 +247,10 @@ public class ControllerAdmin extends HttpServlet {
 			Prestamo prestamo = new Prestamo();
 			
 			int idEjemplar = Integer.parseInt(request.getParameter("idEjemplar"));
-			String tituloEjemplar = request.getParameter("titulo");
+			//String tituloEjemplar = request.getParameter("titulo");
 			int idSocioParaEjemplar = Integer.parseInt(request.getParameter("idSocio"));
-			String nombreSocio = request.getParameter("nombreSocio");
-			String fechaPrestamo = request.getParameter("fechaPrestamo");
+			//String nombreSocio = request.getParameter("nombreSocio");
+			/*String fechaPrestamo = request.getParameter("fechaPrestamo");
 			
 			DateTimeFormatter formato2 = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //Patrón para la BBDD
 			LocalDate localDate2 = LocalDate.parse(fechaPrestamo, formato2);
@@ -281,14 +281,15 @@ public class ControllerAdmin extends HttpServlet {
 			}
 			
 			Date fechaLimiteDevolucionSQL = java.sql.Date.valueOf(fechaLimiteDevolucion);
+			*/
 			
 			
 			prestamo.setIdejemplar(idEjemplar);
-			prestamo.setTitulo(tituloEjemplar);
+			//prestamo.setTitulo(tituloEjemplar);
 			prestamo.setIdsocio(idSocioParaEjemplar);
-			prestamo.setNombreSocio(nombreSocio);
-			prestamo.setFechaprestamo(fechaPrestamoSQL);
-			prestamo.setFechalimitedevolucion(fechaLimiteDevolucionSQL);
+			//prestamo.setNombreSocio(nombreSocio);
+			//prestamo.setFechaprestamo(fechaPrestamoSQL);
+			//prestamo.setFechalimitedevolucion(fechaLimiteDevolucionSQL);
 			
 			try {
 				daoPrestamo2.insertaPrestamo(prestamo);

@@ -1,3 +1,7 @@
+/conexiones/
+/dao/
+/entidades/
+/excepciones/
 /servlets/
 /test/
-/dao/
+/util/

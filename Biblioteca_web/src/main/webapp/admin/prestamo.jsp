@@ -43,29 +43,12 @@
         <input type="number" name="idEjemplar" id="idEjemplar" required />
         </div>
         <div class="etiquetas">
-        <label for="titulo">TÍTULO: </label>
-         </div>
-         <div class="campos">
-        <input type="text" name="titulo" id="titulo" required />
-        </div>
-        <div class="etiquetas">
         <label for="idSocio">ID SOCIO:</label>
         </div>
          <div class="campos">
         <input type="number" name="idSocio" id="idSocio" required />
         </div>
-        <div class="etiquetas">
-        <label for="nombreSocio">NOMBRE SOCIO:</label>
-        </div>
-        <div class="campos">
-        <input type="text" name="nombreSocio" id="nombreSocio" required />
-        </div>
-        <div class="etiquetas">
-        <label for="fechaPrestamo">FECHA PRÉSTAMO:</label>
-        </div>
-        <div class="campos">
-        <input type="date" name="fechaPrestamo" id="fechaPrestamo" required />
-        </div>
+    
         
         <input name="operacion" type="hidden" id="operacion" value="nuevoPrestamo">
 
