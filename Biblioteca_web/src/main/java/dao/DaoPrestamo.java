@@ -89,7 +89,7 @@ public class DaoPrestamo {
         }
     }
     /*********************************************************************************************************************************************************/
-    public int devolucionPrestamo(int idejemplar)throws SQLException,Exception{
+    public int devolucionPrestamo(int idejemplar)throws SQLException,Exception,PrestamoException{
        String ordenSQL;
        int resultado;
        Connection con=null;

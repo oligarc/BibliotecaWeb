@@ -296,12 +296,18 @@ public class ControllerAdmin extends HttpServlet {
 				request.setAttribute("confirmaroperacion", "Préstamo realizado con éxito.");
 			} catch (PrestamoException e) {
 				request.setAttribute("error", e.getMessage());
+				request.setAttribute("idEjemplar", idEjemplar);
+				request.setAttribute("idSocio", idSocioParaEjemplar);
 				e.printStackTrace();
 			} catch (SQLException e) {
 				request.setAttribute("error", "Error en la base de datos: " + e.getMessage());
+				request.setAttribute("idEjemplar", idEjemplar);
+				request.setAttribute("idSocio", idSocioParaEjemplar);
 				e.printStackTrace();
 			} catch (Exception e) {
 				request.setAttribute("error", "Error inesperado: " +e.getMessage());
+				request.setAttribute("idEjemplar", idEjemplar);
+				request.setAttribute("idSocio", idSocioParaEjemplar);
 				e.printStackTrace();
 			}
 			
@@ -309,6 +315,34 @@ public class ControllerAdmin extends HttpServlet {
 			request.getRequestDispatcher("admin/prestamo.jsp").forward(request, response);
 			
 			break;
+			
+		case "borrarprestamo":
+			
+			int idEjemplarParaDevolucion = Integer.parseInt(request.getParameter("idejemplar"));
+			DaoPrestamo daoPrestamoDev = new DaoPrestamo();
+			
+			try {
+				daoPrestamoDev.devolucionPrestamo(idEjemplarParaDevolucion);
+				request.setAttribute("confirmaroperacion", "Devolución realizada con éxito.");
+			} catch (SQLException e) {
+				request.setAttribute("error", "Error en la base de datos: " +e.getMessage());
+				e.printStackTrace();
+			} catch (PrestamoException e) {
+				request.setAttribute("error", e.getMessage());
+				e.printStackTrace();
+			} catch (Exception e) {
+				request.setAttribute("error", "Error inesperado: " +e.getMessage());
+				e.printStackTrace();
+			}
+			
+			request.getRequestDispatcher("admin/devolucion.jsp").forward(request, response);
+			
+			
+			
+			
+			break;
+			
+			
 
 
 		}

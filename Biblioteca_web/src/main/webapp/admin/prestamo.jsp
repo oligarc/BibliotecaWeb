@@ -40,13 +40,13 @@
         <label for="idEjemplar">ID EJEMPLAR: </label>
         </div>
         <div class="campos">
-        <input type="number" name="idEjemplar" id="idEjemplar" required />
+        <input type="number" name="idEjemplar" id="idEjemplar" value="${idEjemplar}" required />
         </div>
         <div class="etiquetas">
         <label for="idSocio">ID SOCIO:</label>
         </div>
          <div class="campos">
-        <input type="number" name="idSocio" id="idSocio" required />
+        <input type="number" name="idSocio" id="idSocio" value="${idSocioParaEjemplar}" required />
         </div>
     
         
