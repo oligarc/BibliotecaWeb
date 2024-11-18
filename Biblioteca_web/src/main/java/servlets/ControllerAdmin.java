@@ -337,13 +337,7 @@ public class ControllerAdmin extends HttpServlet {
 			
 			request.getRequestDispatcher("admin/devolucion.jsp").forward(request, response);
 			
-			
-			
-			
 			break;
-			
-			
-
 
 		}
 	}

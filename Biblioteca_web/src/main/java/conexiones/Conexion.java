@@ -3,6 +3,9 @@ package conexiones;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
+import javax.sql.DataSource;
+
+import javax.naming.InitialContext;
 
 import oracle.jdbc.pool.OracleDataSource;
 
@@ -14,17 +17,24 @@ public class Conexion {
 
 	 public Connection getConexion() throws SQLException,Exception{
 	    	//String url="jdbc:oracle:thin:S2DAWBIBLIOTECA10/S2DAWBIBLIOTECA10@10.0.1.12:1521:oradai";
-	    	String url="jdbc:oracle:thin:S2DAWBIBLIOTECA10/S2DAWBIBLIOTECA10@80.28.158.14:1521:oradai";
-	        Connection con;
-	        OracleDataSource ods;
+	    	//String url="jdbc:oracle:thin:S2DAWBIBLIOTECA10/S2DAWBIBLIOTECA10@80.28.158.14:1521:oradai";
+		 
+		 	String JNDI = "jdbc/bibliotecaaza";
+	        Connection con = null;
+	        //OracleDataSource ods;
 	        try{
 
+	        	/*
 	        	ods=new OracleDataSource();
 	            ods.setURL(url);
 	            con=ods.getConnection();  // obtenemos un objeto java.sql.Connection
 	            DatabaseMetaData meta = con.getMetaData();
 	            System.out.println("JDBC driver version is " + meta.getDriverVersion());
 	            System.out.println("Data Source definido y conexion establecida");
+	            */
+	        	InitialContext initialContext = new InitialContext();
+	        	DataSource ds = (DataSource) initialContext.lookup(JNDI);
+	        	con = ds.getConnection();
 	        }
 	        catch(SQLException sqle){
 	            throw sqle;

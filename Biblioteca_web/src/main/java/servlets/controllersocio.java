@@ -5,6 +5,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
+
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -35,6 +37,8 @@ public class controllersocio extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		HttpSession session = request.getSession(true);
 		
 		String operacion = request.getParameter("operacion");
 		DaoAutor daoAutor = new DaoAutor();
@@ -100,7 +104,14 @@ public class controllersocio extends HttpServlet {
 			request.getRequestDispatcher("socios/getlibros.jsp").forward(request, response);
 			
 			break;
+			
+		case "logout":
+			session.invalidate();
+			response.sendRedirect("index.jsp");
+			break;
 		}
+		
+		
 	}
 
 	/**
