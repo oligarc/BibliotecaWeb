@@ -2,14 +2,17 @@
    <li><a class="MenuBarItemSubmenu" href="#">Socios</a>
       <ul>
 		
+		<c:if test="<%=request.isUserInRole("administrativos")%>">
          <li><a
             href="${pageContext.request.contextPath}/admin/altasocio.jsp">Nuevo
                Socio</a></li>
-       
+         </c:if>
+         
+         <c:if test="<%=request.isUserInRole("administrativos")%>">
          <li><a
             href="${pageContext.request.contextPath}/ControllerAdmin?operacion=listadoSociosPaginado">Listado
                Socios</a></li>     
-      
+      	</c:if>
             <li><a
                href="${pageContext.request.contextPath}/admin/getsocio.jsp">Modificar
                   Socio</a></li>
@@ -19,49 +22,59 @@
             <li><a
                href="${pageContext.request.contextPath}/controllersocio?operacion=editardatospersonales">Modificar
                   Datos Personales</a></li>
-                
+             
+             <c:if test="<%=request.isUserInRole("administrativos")%>">   
             <li><a
                href="${pageContext.request.contextPath}/ControllerAdmin?operacion=socioslibrosfueraplazo">Socios
                   Morosos</a></li>
+                  </c:if>
       
       </ul></li>
    <li><a href="#" class="MenuBarItemSubmenu">Autores</a>
       <ul>
      
+     	<c:if test="<%=request.isUserInRole("administrativos")%>">   
          <li><a
             href="${pageContext.request.contextPath}/admin/altaautor.jsp">Nuevo
                Autor</a></li>
+               </c:if>
                          
          <li><a href="${pageContext.request.contextPath}/controllersocio?operacion=listarAutores">Listado de Autores</a></li>
       </ul></li>
    <li><a href="#" class="MenuBarItemSubmenu">Ejemplares</a>
       <ul>
       
+      <c:if test="<%=request.isUserInRole("administrativos")%>">  
          <li><a
             href="${pageContext.request.contextPath}/controlleradmin?operacion=iniciodelejemplar">Eliminar
                Ejemplar</a></li>
+               </c:if>
        
       </ul></li>
    <li><a href="#" class="MenuBarItemSubmenu">Libros</a>
       <ul>
          <li><a
             href="${pageContext.request.contextPath}/socios/getlibros.jsp">Consulta</a></li>
-		           
+		         
+		 <c:if test="<%=request.isUserInRole("administrativos")%>">            
          <li><a
             href="${pageContext.request.contextPath}/admin/altalibro.jsp">Nuevo
                Libro</a></li>
+               </c:if>
         
       </ul></li>
    <li><a class="MenuBarItemSubmenu" href="#">Prestamos</a>
       <ul>
-      
+      	
+      	<c:if test="<%=request.isUserInRole("administrativos")%>">    
          <li><a
             href="${pageContext.request.contextPath}/admin/prestamo.jsp">Nuevo
                Prestamo</a></li>
-     
+     		</c:if>
+     	<c:if test="<%=request.isUserInRole("administrativos")%>">    	
          <li><a
             href="${pageContext.request.contextPath}/admin/devolucion.jsp">Devolucion</a></li>
-      
+      	</c:if>
          <li><a
             href="${pageContext.request.contextPath}/controllersocio?operacion=logout">Logout</a></li>
          

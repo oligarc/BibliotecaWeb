@@ -8,6 +8,7 @@ public class Socio {
 	private String direccion;
 	private String clave;
 	private int version;
+	private String telefono;
 	
 	public Socio() {
 		
@@ -22,6 +23,16 @@ public class Socio {
 	}
 	
 	
+	
+	
+	public String getTelefono() {
+		return telefono;
+	}
+
+	public void setTelefono(String telefono) {
+		this.telefono = telefono;
+	}
+
 	public String getClave() {
 		return clave;
 	}

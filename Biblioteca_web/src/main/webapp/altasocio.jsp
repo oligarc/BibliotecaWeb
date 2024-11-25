@@ -6,14 +6,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Nuevo Socio</title>
-<jsp:directive.include file="../includes/includefile.jspf" />
+<jsp:directive.include file="includes/includefile.jspf" />
 </head>
 <body>
 	<div class="container">
 		<div class="header"></div>
-		<div class="menu">
-			<jsp:directive.include file="../WEB-INF/menu.jspf" />
-		</div>
 		<c:if test="${error != null}">
 			<div class="diverror">
 				<p>
@@ -31,7 +28,7 @@
 			</div>
 		</c:if>
 		<div id="formSocio" class="formulariogeneral">
-			<form name="frmSocio" method="post" action="${pageContext.request.contextPath}/ControllerAdmin">
+			<form name="frmSocio" method="post" action="${pageContext.request.contextPath}/Controller">
 				<fieldset id="datosSocio">
 					<legend><img src="${pageContext.request.contextPath}/resources/img/azarquiel.gif">&nbsp;Nuevo Socio</legend>
 					
@@ -81,16 +78,28 @@
 						       value="${nuevoSocio.direccion}" 
 						       required/>
 					</div>
+					
+					<!-- Campo para el teléfono del socio -->
+					<div class="etiquetas">
+						<label for="telefono">Teléfono:</label>
+					</div>
+					<div class="campos">
+						<input type="text" 
+						       id="telefono" 
+						       name="telefono" 
+						       value="${nuevoSocio.telefono}" 
+						       required/>
+					</div>
 
 					<!-- Operación oculta para indicar la acción en el controlador -->
 					<input name="operacion" 
 					       type="hidden" 
 					       id="operacion" 
-					       value="insertasocio">
+					       value="registrarse">
 
 					<!-- Botón para enviar el formulario -->
 					<div class="botones">	
-						<input type="submit" name="Submit" value="Guardar">
+						<input type="submit" name="Submit" value="Alta">
 					</div>
 				</fieldset>
 			</form>

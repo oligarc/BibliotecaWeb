@@ -1,1 +1,6 @@
 /servlets/
+/dao/
+/util/
+/tools/
+/entidades/
+/test/

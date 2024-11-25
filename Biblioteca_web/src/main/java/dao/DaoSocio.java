@@ -5,11 +5,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import conexiones.Conexion;
 import entidades.Socio;
+import entidades.Token;
+import tools.Tools;
 import util.Hash;
 
 public class DaoSocio {
@@ -19,7 +22,7 @@ public class DaoSocio {
 	}
 	
 	
-	public void insertarSocio(Socio socio) throws SQLException { //Éste es el bueno
+	public void insertarSocio(Socio socio,String clave) throws SQLException { //Éste es el bueno
 		
 		Connection con = null;
 		Conexion miconex = new Conexion();
@@ -29,10 +32,13 @@ public class DaoSocio {
 		try {
 			con = miconex.getConexion();
 			con.setAutoCommit(false); //Esto lo hacemos para que no se guarden los cambios hasta que yo lo decida
-			query = "INSERT INTO USUARIOS VALUES(?,?)";
+			
+			//Antes haciamos los 3 pasos de golpe, pero ahora lo vamos a hacer con validación
+			
+			/*query = "INSERT INTO USUARIOS VALUES(?,?)";
 			ps = con.prepareStatement(query);
 			ps.setString(1, socio.getEmail());
-			ps.setString(2, Hash.getHash(socio.getClave(), "MD5")); //Utilizamos la clase Hash para encriptar la contraseña
+			ps.setString(2, Hash.getSha256(socio.getClave())); //Utilizamos la clase Hash para encriptar la contraseña
 			ps.executeUpdate();
 			ps.close();
 			query = "INSERT INTO GRUPOS VALUES(?,?)";
@@ -41,15 +47,35 @@ public class DaoSocio {
 			ps.setString(2, socio.getEmail());
 			ps.executeUpdate();
 			ps.close();
-			query = "INSERT INTO SOCIO (idSocio,email,nombre,direccion,version) VALUES(S_SOCIO.NEXTVAL,?,?,?,?)";
+			*/
+			query = "INSERT INTO SOCIO (idSocio,email,nombre,direccion,version,telefono) VALUES(S_SOCIO.NEXTVAL,?,?,?,?,?)";
 			ps = con.prepareStatement(query);
 			ps.setString(1, socio.getEmail());
 			ps.setString(2, socio.getNombre());
 			ps.setString(3, socio.getDireccion());
 			ps.setInt(4, 1);
+			ps.setString(5, socio.getTelefono());
 			ps.executeUpdate();
-			con.commit();
 			ps.close();
+			
+			//Segundo paso, creamos el objeto Token para poder enviar por correo
+			
+			Token token = new Token();
+			token.setEmail(socio.getEmail());
+			token.setValue(Tools.generaToken()); //Generamos un valor para el Token
+			token.setTelefono(socio.getTelefono());
+			token.setFecha(java.sql.Timestamp.valueOf(LocalDateTime.now()));
+			token.setClave(Hash.getSha256(clave));
+			DaoToken daoToken = new DaoToken();
+			daoToken.addToken(token);
+			
+			//Tercer paso: Enviar un correo de validación con el mail que se han registrado
+			
+			String asunto = "Validación de alta de usuario en la Biblioteca";
+			String cuerpo = Tools.creaCuerpoCorreo(token.getEmail(), token.getValue());
+			Tools.enviarConGMail(token.getEmail(), asunto, cuerpo);
+			System.out.println("Correo enviado");
+			con.commit();
 			con.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -537,5 +563,51 @@ public class DaoSocio {
 		return listasocios;
 		
 	}
+	
+	//método que activa la cuenta cuando recibimos la solicitud desde el email
+		public void activarCuenta(String email, String valortoken) throws Exception {
+			Connection con = null;
+			PreparedStatement st = null;
+			//lo primero debería ser comprobar el token
+			DaoToken daoToken = new DaoToken();
+			Conexion miconex = new Conexion();
+			try {
+				con = miconex.getConexion();
+				con.setAutoCommit(false); //como voy a hacer varios cambios, los valído al final
+				Token token = daoToken.findTokenByEmail(email);
+				if (token.getValue().equals(valortoken)) {
+					String ordenSQL = "INSERT INTO USUARIOS VALUES(?,?)";
+					st = con.prepareStatement(ordenSQL);
+					st.setString(1, email);
+					st.setString(2, token.getClave() );
+					st.executeUpdate();
+					st.close();
+					ordenSQL = "INSERT INTO GRUPOS VALUES(?,?)";
+					st = con.prepareStatement(ordenSQL);
+					st.setString(1, "sociosbiblioteca");
+					st.setString(2, email);
+					st.executeUpdate();
+					st.close();
+					ordenSQL = "DELETE FROM TOKEN WHERE EMAIL=?";
+					st = con.prepareStatement(ordenSQL);
+					st.setString(1, email);
+					st.executeUpdate();
+					st.close();
+					con.commit(); //valído los 3 cambios
+				}
+			} catch (SQLException e) {
+				con.rollback();
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				con.rollback();
+				e.printStackTrace();
+				throw e;
+			}finally {
+				if(con != null) {
+					con.close();
+				}
+			}
+		}
 
 }

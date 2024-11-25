@@ -89,6 +89,8 @@ public class ControllerAdmin extends HttpServlet {
 
 			break;
 
+		//Sería el registrarse que ahora está en Controller
+		/*
 		case "insertasocio":
 			
 			
@@ -121,6 +123,7 @@ public class ControllerAdmin extends HttpServlet {
 			request.getRequestDispatcher("admin/altasocio.jsp").forward(request, response); // Recarga la página
 
 			break;
+			*/
 
 		case "listadoSociosPaginado":
 			

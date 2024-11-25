@@ -47,7 +47,7 @@ recaptchaResponse.value = token;
 					<div class="cb"></div>
 					<div class="botones">	
 							<input type="submit" name="Submit" value="Acceder">
-							<a href="/biblioteca/altasocio.jsp">Registrese</a>
+							<a href="/Biblioteca_web/altasocio.jsp">Registrese</a>
 					</div>	
 				</fieldset>		
 				<input type="hidden" id="g-recaptcha-response" name="g-recaptcha-response">	
